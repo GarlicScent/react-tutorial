@@ -1,3 +1,7 @@
+# 흐흐 나두 이제 리액트 맛스타~
+
+공식문서 전부다 읽을테다!
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
