@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const root = document.getElementById('root');
+    const MinutesToHours = () => {
+      const [amount, setAmount] = React.useState(0);
+      const [inverted, setInverted] = React.useState(false);
+      const onChange = (event) => {
+        setAmount((amount) => amount = event.target.value);
+      }
+      const reset = () => {
+        setAmount((amount) => amount = 0);
+      }
+      const onFlip = () => {
+        reset();
+        setInverted((current) => !current);
+      }
+      return (
+        <div>
+          <div>
+            <label htmlFor="minutes">Minutes</label>
+            <input 
+              value={inverted ? amount * 60 : amount} 
+              placeholder="Minutes" 
+              type="number" 
+              id="minutes" 
+              onChange={onChange}
+              disabled={inverted}
+            />
+            <h4>You want to convert {amount}</h4>
+            <label htmlFor="hours">Hours</label>
+            <input 
+              value={inverted ? amount :  Math.floor((amount / 60) * 10) / 10}
+              placeholder="Hours" 
+              type="number" 
+              id="hours"
+              onChange={onChange}
+              disabled={!inverted}
+            />  
+          </div>
+          <button onClick={reset}>
+            Reset
+          </button>
+          <button onClick={onFlip}>Flip</button>
+        </div>
+      );
+    }
+    const App = ()=> {
+      <>
+        <App /> 
+      </>
+    }
+
+    ReactDOM.render(<App />, root);
+  </script>
+</html>
