@@ -1,28 +1,30 @@
 import Button from "./Button";
 import styles from "./App.module.css";
 import { useState, useEffect } from "react";
+import { render } from "@testing-library/react";
+
+function Hello() {
+	function byeFn() {
+		console.log("bye");
+	}
+	function hiFn() {
+		console.log("created :)");
+		return byeFn;
+	}
+	useEffect(hiFn, []);
+	return <h1>Hello</h1>;
+}
 
 function App() {
-	const [counter, setCounter] = useState(0);
-	const [keyword, setKeyword] = useState("");
-	const onClick = () => setCounter((prev) => prev + 1);
-	const onChange = (event) => setKeyword(event.target.value);
+	const [showing, setShowing] = useState(false);
 
-	useEffect(() => console.log("call the counter"), [counter]);
-	useEffect(() => {
-		if (keyword !== "" && keyword.length > 4)
-			console.log("Search for: ", keyword);
-	}, [keyword]);
+	function revertClick() {
+		setShowing((prev) => !prev);
+	}
 	return (
 		<div>
-			<input
-				onChange={onChange}
-				type="text"
-				placeholder="Search here..."
-			/>
-
-			<h1 className={styles.title}>{counter}</h1>
-			<button onClick={onClick}>Click me</button>
+			{showing ? <Hello /> : null}
+			<button onClick={revertClick}>{showing ? "Hide" : "Show"}</button>
 		</div>
 	);
 }
