@@ -1,37 +1,66 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
-	const [todo, setTodo] = useState("");
-	const [todos, setTodos] = useState([]);
-	const onChange = (event) => setTodo(event.target.value);
-	const onSubmit = (event) => {
-		event.preventDefault();
-		if (todo === "") {
-			return;
-		}
-		setTodo("");
-		setTodos((currentArray) => [todo, ...currentArray]);
+	const [loading, setLoading] = useState(true);
+	const [coins, setCoins] = useState([]);
+	const [asset, setAsset] = useState();
+	const [selectedCoin, setSelectedCoin] = useState();
+	const [symbol, setSymbol] = useState("");
+	useEffect(() => {
+		fetch("https://api.coinpaprika.com/v1/tickers")
+			.then((response) => response.json())
+			.then((json) => {
+				// console.log(json);
+				setCoins(json);
+				setLoading(false);
+				setSelectedCoin(json[0].quotes.USD.price);
+			});
+	}, []);
+
+	const moneyToCoin = (event) => {
+		setAsset(event.target.value);
 	};
-	console.log(todo, todos);
+	const onSelect = (event) => {
+		const priceAndSymbol = event.target.value.split(" ");
+		setSelectedCoin(priceAndSymbol[0]);
+		setSymbol(priceAndSymbol[1]);
+	};
 	return (
 		<div>
-			<h1>My To Dos</h1>
-			<h4>(left todos: {todos.length})</h4>
-			<form onSubmit={onSubmit}>
+			<h1>The Coins! ({coins.length})</h1>
+			{loading ? <strong>Loading...</strong> : null}
+			<select onChange={onSelect}>
+				{coins.map((coin, index) => {
+					return (
+						<option
+							key={coin.id}
+							value={coin.quotes.USD.price + " " + coin.symbol}
+						>
+							{coin.name} ({coin.symbol}):{" "}
+							{coin.quotes.USD.price + " "}
+							USD($)
+						</option>
+					);
+				})}
+			</select>
+			<br />
+			{loading ? null : (
 				<input
-					value={todo}
-					onChange={onChange}
-					type="text"
-					placeholder="Write your to do..."
+					type="number"
+					placeholder="Write your money in USD"
+					onChange={moneyToCoin}
+					style={{ width: "300px" }}
 				/>
-				<button type="submit">Add To Do</button>
-			</form>
-			<hr />
-			<ul>
-				{todos.map((todo, index) => (
-					<li key={index}>{todo.toUpperCase()}</li>
-				))}
-			</ul>
+			)}
+			<h3>
+				You can buy{" "}
+				{asset && selectedCoin
+					? Math.floor((asset / parseInt(selectedCoin)) * 1000) /
+							1000 +
+					  " Coins. of " +
+					  symbol
+					: "Nothing with that money!!"}
+			</h3>
 		</div>
 	);
 }
