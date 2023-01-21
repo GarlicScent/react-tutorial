@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/react-toturial/static/js/main.555671f1.js",
+    "main.js": "/react-toturial/static/js/main.ce20fb7f.js",
     "index.html": "/react-toturial/index.html",
-    "main.555671f1.js.map": "/react-toturial/static/js/main.555671f1.js.map"
+    "main.ce20fb7f.js.map": "/react-toturial/static/js/main.ce20fb7f.js.map"
   },
   "entrypoints": [
-    "static/js/main.555671f1.js"
+    "static/js/main.ce20fb7f.js"
   ]
 }
